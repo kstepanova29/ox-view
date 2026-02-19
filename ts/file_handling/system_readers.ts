@@ -284,6 +284,16 @@ function parseTop(s: string) {
     system.initInstances(system.systemLength())
     system.fillDefaultColors();
     addSystemToScene(system);
+
+    // [CUSTOM COLOR FEATURE] After the system is fully loaded and added to the scene,
+    // check if any strand has color= in the .top file. If so, switch to Custom mode.
+    // This must be AFTER addSystemToScene or it breaks rendering.
+    // Files without color= will skip this and use the default coloring mode.
+    let hasTopologyColors = system.strands.some(s => s.kwdata && s.kwdata['color']);
+    if (hasTopologyColors) {
+        view.coloringMode.set("Custom");
+    }
+
     return system
 }
 
