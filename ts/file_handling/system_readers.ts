@@ -149,8 +149,7 @@ function parseTop(s: string) {
 
             new_strand.end3 = nuc;
 
-            // [CUSTOM COLOR FEATURE] If the .top file has color= on this strand,
-            // set each element's .color property so it shows up in Custom coloring mode
+            // set the strand color if specified
             if (kwdata['color']) {
                 let strandColor = new THREE.Color(kwdata['color']);
                 new_strand.forEach((elem) => {
@@ -285,10 +284,7 @@ function parseTop(s: string) {
     system.fillDefaultColors();
     addSystemToScene(system);
 
-    // [CUSTOM COLOR FEATURE] After the system is fully loaded and added to the scene,
-    // check if any strand has color= in the .top file. If so, switch to Custom mode.
-    // This must be AFTER addSystemToScene or it breaks rendering.
-    // Files without color= will skip this and use the default coloring mode.
+    // if any colors are specified, switch to custom color mode
     let hasTopologyColors = system.strands.some(s => s.kwdata && s.kwdata['color']);
     if (hasTopologyColors) {
         view.coloringMode.set("Custom");
